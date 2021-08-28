@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Card from '../UI/Card/card.component';
 import Button from '../UI/Button/button.component';
@@ -12,14 +12,26 @@ const Login = ({ onLoggedIn }) => {
     const [isPasswordValid, setIsPasswordValid] = useState();
     const [isFormValid, setIsFormValid] = useState(false);
 
+    useEffect(() => {
+        const identifier = setTimeout(() => {
+            setIsFormValid(newEmail.includes('@') && newPassword.trim().length > 6);
+            console.log('Checking form validity!');
+        }, 500);
+        
+        return () => {
+            console.log('CLEANUP');
+            clearTimeout(identifier);
+        }
+    }, [newEmail, newPassword])
+
+    // This way we can lessen the number of http request to the server instead of doing it at every key stroke
+
     const setEmailHandler = event => {
         setNewEmail(event.target.value);
-        setIsFormValid(event.target.value.includes('@') && newPassword.trim().length > 6);
     }
 
     const setPasswordHandler = event => {
         setNewPassword(event.target.value);
-        setIsFormValid(event.target.value.trim().length > 6 && newEmail.includes('@'));
     }
 
     const validateEmailHandler = () => {
@@ -33,13 +45,10 @@ const Login = ({ onLoggedIn }) => {
 
     const validatePasswordHandler = () => {
         setIsPasswordValid(newPassword.trim().length > 6);
-
     }
 
     const formSubmitHandler = event => {
         event.preventDefault();
-
-        setIsFormValid(true);
         onLoggedIn(newEmail, newPassword);
     }
 
