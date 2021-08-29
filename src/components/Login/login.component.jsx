@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 import Card from '../UI/Card/card.component';
 import Button from '../UI/Button/button.component';
@@ -56,6 +56,18 @@ const Login = ({ onLoggedIn }) => {
         value: '',
         isValid: null
     });
+
+    useEffect(() => {
+        const identifier = setTimeout(() => {
+            console.log('Checking form validity!');
+            setIsFormValid(emailState.isValid && passwordState.isValid);
+        }, 500);
+
+        return () => {
+            console.log('CLEANUP!');
+            clearTimeout(identifier);
+        };
+    }, [emailState.isValid, passwordState.isValid]);
 
     const setEmailHandler = event => {
         dispatchEmail({
