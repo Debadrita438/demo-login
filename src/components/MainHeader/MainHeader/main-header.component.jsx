@@ -6,7 +6,7 @@ const MainHeader = ({ isAuthenticated, onLoggedOut }) => {
     return ( 
         <header className={classes['main-header']}>
             <h1>A Typical Page</h1>
-            <Navigation isLoggedIn={isAuthenticated} onLoggedOut={onLoggedOut} />
+            <Navigation onLoggedOut={onLoggedOut} />
         </header>
     );
 }
